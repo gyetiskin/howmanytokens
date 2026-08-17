@@ -237,3 +237,7 @@ binding to a fixed schema.
   entered yourself.
 - Gemini usage before telemetry was enabled is not recorded.
 - Anthropic usage outside Claude Code is not reported separately.
+
+## License
+
+MIT — see [LICENSE](LICENSE).
