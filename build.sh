@@ -6,6 +6,22 @@ set -euo pipefail
 
 cd "$(dirname "$0")"
 
+INSTALL=0
+for arg in "$@"; do
+    case "$arg" in
+        --install) INSTALL=1 ;;
+        *) echo "Unknown argument: $arg" >&2
+           echo "Usage: ./build.sh [--install]" >&2
+           exit 2 ;;
+    esac
+done
+
+if ! command -v swift >/dev/null 2>&1; then
+    echo "swift not found. Install Xcode or the Command Line Tools:" >&2
+    echo "    xcode-select --install" >&2
+    exit 1
+fi
+
 APP_NAME="HowManyTokens"
 BUNDLE_ID="com.howmanytokens.menubar"
 VERSION="1.0.0"
@@ -45,7 +61,7 @@ PLIST
 echo "==> Signing (ad-hoc)"
 codesign --force --deep --sign - "$APP"
 
-if [[ "${1:-}" == "--install" ]]; then
+if [[ "$INSTALL" == 1 ]]; then
     echo "==> Installing into /Applications"
     rm -rf "/Applications/$APP_NAME.app"
     cp -R "$APP" /Applications/
